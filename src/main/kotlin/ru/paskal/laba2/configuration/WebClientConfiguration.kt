@@ -55,7 +55,7 @@ class WebClientConfiguration(env: Environment) {
 
     @PostConstruct
     fun init() {
-        Hooks.onErrorDropped {e -> log.error { e.message } }
+        Hooks.onErrorDropped {e -> log.error { "Error from webClient: ${e.message}" } }
         log.info { "WebClientConfiguration initialized" }
     }
 }

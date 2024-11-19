@@ -14,7 +14,7 @@ class Laureate : BaseEntity() {
     @Column(name = "firstname", nullable = false, length = 100)
     var firstname: String? = null
 
-    @Column(name = "surname", nullable = false, length = 100)
+    @Column(name = "surname", length = 100)
     var surname: String? = null
 
     @Column(name = "born")
