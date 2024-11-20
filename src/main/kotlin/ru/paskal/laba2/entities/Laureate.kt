@@ -2,6 +2,10 @@ package ru.paskal.laba2.entities
 
 import jakarta.persistence.*
 import org.hibernate.proxy.HibernateProxy
+import org.springframework.transaction.annotation.Transactional
+import ru.paskal.laba2.dtos.AffiliationDto
+import ru.paskal.laba2.dtos.LaureateDto
+import ru.paskal.laba2.dtos.PrizeDto
 import java.time.LocalDate
 
 @Entity
@@ -70,4 +74,43 @@ class Laureate : BaseEntity() {
     final override fun hashCode(): Int =
         if (this is HibernateProxy) this.hibernateLazyInitializer.persistentClass.hashCode() else javaClass.hashCode()
 
+}
+
+
+@Transactional(readOnly = true)
+fun Laureate.mapToDto(): LaureateDto {
+    // Преобразуем список призов в PrizeDto
+    val prizesDto = this@mapToDto.prizes.map { prize ->
+        val affiliationsDto = prize.affiliations.map { affiliation ->
+            AffiliationDto(
+                name = affiliation.name,
+                city = affiliation.city,
+                country = affiliation.country
+            )
+        }
+        PrizeDto(
+            year = prize.year,
+            category = prize.category,
+            share = prize.share,
+            motivation = prize.motivation,
+            affiliations = affiliationsDto
+        )
+    }
+
+    // Создаём DTO из сущности
+    return LaureateDto(
+        originId = this@mapToDto.originId,
+        firstname = this@mapToDto.firstname,
+        surname = this@mapToDto.surname,
+        born = this@mapToDto.born,
+        died = this@mapToDto.died,
+        bornCountry = this@mapToDto.bornCountry,
+        bornCountryCode = this@mapToDto.bornCountryCode,
+        bornCity = this@mapToDto.bornCity,
+        diedCountry = this@mapToDto.diedCountry,
+        diedCountryCode = this@mapToDto.diedCountryCode,
+        diedCity = this@mapToDto.diedCity,
+        gender = this@mapToDto.gender,
+        prizes = prizesDto
+    )
 }

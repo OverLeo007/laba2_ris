@@ -3,6 +3,8 @@ package ru.paskal.laba2.security.user;
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import ru.paskal.laba2.exceptions.UserEntityNotCreatedException
+import ru.paskal.laba2.exceptions.UserEntityNotFoundException
 
 @Service
 @Transactional(readOnly = true)
@@ -15,7 +17,7 @@ class UserEntityService(
     }
 
     fun getById(id: Int): UserEntity {
-        return repository.findById(id).orElseThrow { IllegalArgumentException("User with id $id not found") }
+        return repository.findById(id).orElseThrow { UserEntityNotFoundException(id) }
     }
 
     @Transactional
@@ -26,7 +28,7 @@ class UserEntityService(
     @Transactional
     fun createUser(username: String, password: String, role: String): UserEntity {
         if (repository.existsByUsername(username)) {
-            throw IllegalArgumentException("User with username $username already exists")
+            throw UserEntityNotCreatedException("User with username $username already exists")
         }
         val user = UserEntity()
         user.username = username

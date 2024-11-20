@@ -142,3 +142,6 @@
 2024-11-20 00:16:01,560 [restartedMain] INFO  ru.paskal.laba2.client.Requester - Fetching data from https://api.nobelprize.org/v1/laureate.json
 2024-11-20 00:16:02,946 [reactor-http-nio-2] INFO  ru.paskal.laba2.client.Handler - Nullables: {diedCity=true, bornCountry=true, surname=true, born=true, diedCountry=true, bornCity=true, died=true, bornCountryCode=true, diedCountryCode=true}
 2024-11-20 00:16:03,013 [reactor-http-nio-2] INFO  r.p.laba2.services.LaureateService - Saving 1 new laureates
+2024-11-20 02:47:58,963 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-11-20 02:47:58,981 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-11-20 02:47:58,990 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

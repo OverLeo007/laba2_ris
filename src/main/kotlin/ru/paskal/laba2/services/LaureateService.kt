@@ -29,4 +29,12 @@ class LaureateService(
         return repository.save(laureate)
     }
 
+    fun getAll(): List<Laureate> {
+        return repository.findAll()
+    }
+
+    fun getAllByBornCountry(bornCountry: String): List<Laureate> {
+        return repository.findAllByBornCountry(bornCountry)
+    }
+
 }

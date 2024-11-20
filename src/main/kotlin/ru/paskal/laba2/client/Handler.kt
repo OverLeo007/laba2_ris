@@ -32,9 +32,8 @@ class Handler(
             }
         }
         if (nullables.isNotEmpty()) {
-            log.info { "Nullables: $nullables" }
+            log.debug { "Nullables: $nullables" }
         }
         laureateService.saveAllIfNotExists(laureates)
-
     }
 }
