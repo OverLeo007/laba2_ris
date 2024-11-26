@@ -10,10 +10,9 @@ class JwtToPrincipalConverter {
 
     fun convert(jwt: DecodedJWT): UserPrincipal {
         return UserPrincipal(
-            jwt.getClaim("id").asInt(),
-            jwt.getClaim("username").asString(),
-            jwt.getClaim("password").asString(),
-            extractAuthorities(jwt)
+            id = jwt.subject.toInt(),
+            username = jwt.getClaim("username").asString(),
+            authorities =  extractAuthorities(jwt)
         )
     }
 

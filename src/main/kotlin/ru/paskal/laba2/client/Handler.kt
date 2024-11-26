@@ -6,6 +6,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import ru.paskal.laba2.dtos.LaureateDto
 import ru.paskal.laba2.dtos.mapToEntity
+import ru.paskal.laba2.dtos.responses.UpdateFromApiResponse
 import ru.paskal.laba2.services.LaureateService
 import ru.paskal.laba2.utils.shortPSting
 import kotlin.reflect.full.declaredMemberProperties
@@ -18,7 +19,7 @@ class Handler(
     private val laureateService: LaureateService
 ) {
 
-    fun handleResponse(response: String) {
+    fun handleResponse(response: String): UpdateFromApiResponse {
         val jsonTree = objectMapper.readTree(response)
 
         println("Response: ${jsonTree.shortPSting()}")
@@ -34,6 +35,6 @@ class Handler(
         if (nullables.isNotEmpty()) {
             log.debug { "Nullables: $nullables" }
         }
-        laureateService.saveAllIfNotExists(laureates)
+        return laureateService.saveAllIfNotExists(laureates)
     }
 }

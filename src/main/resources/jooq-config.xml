@@ -1,0 +1,18 @@
+<configuration>
+    <jdbc>
+        <driver>org.postgresql.Driver</driver>
+        <url>jdbc:postgresql://localhost:5432/dis?currentSchema=laba2</url>
+        <user>postgres</user>
+        <password>qwerty</password>
+    </jdbc>
+    <generator>
+        <database>
+            <name>org.jooq.meta.postgres.PostgresDatabase</name>
+            <inputSchema>laba2</inputSchema>
+        </database>
+        <target>
+            <packageName>ru.paskal.laba2.entities.tables</packageName>
+            <directory>src/main/kotlin</directory>
+        </target>
+    </generator>
+</configuration>

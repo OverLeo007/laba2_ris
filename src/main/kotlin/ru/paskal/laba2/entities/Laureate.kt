@@ -2,14 +2,24 @@ package ru.paskal.laba2.entities
 
 import jakarta.persistence.*
 import org.hibernate.proxy.HibernateProxy
-import org.springframework.transaction.annotation.Transactional
-import ru.paskal.laba2.dtos.AffiliationDto
-import ru.paskal.laba2.dtos.LaureateDto
-import ru.paskal.laba2.dtos.PrizeDto
 import java.time.LocalDate
 
 @Entity
 @Table(name = "laureates")
+@NamedEntityGraph(
+    name = "laureate-prizes-affiliations",
+    attributeNodes = [
+        NamedAttributeNode("prizes", subgraph = "prizes-affiliations"),
+    ],
+    subgraphs = [
+        NamedSubgraph(
+            name = "prizes-affiliations",
+            attributeNodes = [
+                NamedAttributeNode("affiliations")
+            ]
+        )
+    ]
+)
 class Laureate : BaseEntity() {
 
     @Column(name = "origin_id")
@@ -77,40 +87,43 @@ class Laureate : BaseEntity() {
 }
 
 
-@Transactional(readOnly = true)
-fun Laureate.mapToDto(): LaureateDto {
-    // Преобразуем список призов в PrizeDto
-    val prizesDto = this@mapToDto.prizes.map { prize ->
-        val affiliationsDto = prize.affiliations.map { affiliation ->
-            AffiliationDto(
-                name = affiliation.name,
-                city = affiliation.city,
-                country = affiliation.country
-            )
-        }
-        PrizeDto(
-            year = prize.year,
-            category = prize.category,
-            share = prize.share,
-            motivation = prize.motivation,
-            affiliations = affiliationsDto
-        )
-    }
-
-    // Создаём DTO из сущности
-    return LaureateDto(
-        originId = this@mapToDto.originId,
-        firstname = this@mapToDto.firstname,
-        surname = this@mapToDto.surname,
-        born = this@mapToDto.born,
-        died = this@mapToDto.died,
-        bornCountry = this@mapToDto.bornCountry,
-        bornCountryCode = this@mapToDto.bornCountryCode,
-        bornCity = this@mapToDto.bornCity,
-        diedCountry = this@mapToDto.diedCountry,
-        diedCountryCode = this@mapToDto.diedCountryCode,
-        diedCity = this@mapToDto.diedCity,
-        gender = this@mapToDto.gender,
-        prizes = prizesDto
-    )
-}
+//@Transactional(readOnly = true)
+//fun Laureate.toDto(): LaureateDto {
+//    Hibernate.initialize(this.prizes)
+//
+//    // Преобразуем список призов в PrizeDto
+//    val prizesDto = this@toDto.prizes.map { prize ->
+//        Hibernate.initialize(prize.affiliations)
+//        val affiliationsDto = prize.affiliations.map { affiliation ->
+//            AffiliationDto(
+//                name = affiliation.name,
+//                city = affiliation.city,
+//                country = affiliation.country
+//            )
+//        }
+//        PrizeDto(
+//            year = prize.year,
+//            category = prize.category,
+//            share = prize.share,
+//            motivation = prize.motivation,
+//            affiliations = affiliationsDto
+//        )
+//    }
+//
+//    // Создаём DTO из сущности
+//    return LaureateDto(
+//        originId = this@toDto.originId,
+//        firstname = this@toDto.firstname,
+//        surname = this@toDto.surname,
+//        born = this@toDto.born,
+//        died = this@toDto.died,
+//        bornCountry = this@toDto.bornCountry,
+//        bornCountryCode = this@toDto.bornCountryCode,
+//        bornCity = this@toDto.bornCity,
+//        diedCountry = this@toDto.diedCountry,
+//        diedCountryCode = this@toDto.diedCountryCode,
+//        diedCity = this@toDto.diedCity,
+//        gender = this@toDto.gender,
+//        prizes = prizesDto
+//    )
+//}

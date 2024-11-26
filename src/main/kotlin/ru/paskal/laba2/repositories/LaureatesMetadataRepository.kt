@@ -1,4 +1,4 @@
-package ru.paskal.laba2.repositories;
+package ru.paskal.laba2.repositories
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query

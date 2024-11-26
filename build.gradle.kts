@@ -1,3 +1,4 @@
+
 plugins {
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
@@ -22,13 +23,33 @@ repositories {
 }
 
 dependencies {
+
+	// https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api
+//	implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
+// https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
+//	implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
+
+	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-data-rest
+//	implementation("org.springdoc:springdoc-openapi-data-rest:1.8.0")
+	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-kotlin
+//	runtimeOnly("org.springdoc:springdoc-openapi-kotlin:1.8.0")
+	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	implementation("commons-io:commons-io:2.18.0")
+
+
+	// https://mvnrepository.com/artifact/org.jooq/jooq-meta
+	implementation("org.jooq:jooq-meta:3.19.15")
+	// https://mvnrepository.com/artifact/org.jooq/jooq-codegen
+	implementation("org.jooq:jooq-codegen:3.19.15")
 	// https://mvnrepository.com/artifact/com.auth0/java-jwt
 	implementation("com.auth0:java-jwt:4.4.0")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
-	implementation("org.modelmapper:modelmapper:3.2.1")
+//	implementation("org.modelmapper:modelmapper:3.2.1")
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.1")
+//	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.1")
 	implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
 	compileOnly("org.projectlombok:lombok:1.18.34")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -61,6 +82,23 @@ allOpen {
 	annotation("jakarta.persistence.Embeddable")
 }
 
+sourceSets {
+	main {
+		java {
+			srcDir("src/main/kotlin")
+		}
+	}
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+
+tasks.register<JavaExec>("generateJooq") {
+	group = "jooq"
+	description = "Generates jOOQ classes"
+	classpath = sourceSets["main"].runtimeClasspath
+	mainClass.set("org.jooq.codegen.GenerationTool")
+	args = listOf("src/main/resources/jooq-config.xml")
 }

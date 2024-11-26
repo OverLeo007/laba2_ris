@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configurers.*
@@ -22,6 +23,7 @@ import ru.paskal.laba2.security.user.UserDetailsServiceImpl
 @Configuration
 @EnableWebSecurity
 @ComponentScan("ru.paskal.laba2")
+@EnableMethodSecurity(securedEnabled = true)
 class SecurityConfiguration(
     private val jwtAuthFilter: JwtAuthFilter,
     private val userDetailsService: UserDetailsServiceImpl,
@@ -65,12 +67,18 @@ class SecurityConfiguration(
                     .authenticationEntryPoint(unauthorizedHandler)
             }
             .securityMatcher("/**")
-            .authorizeHttpRequests { registry ->
-                registry
+            .authorizeHttpRequests { authorizeHttpRequests ->
+                authorizeHttpRequests
                     .requestMatchers("/").permitAll()
+                    .requestMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                    ).permitAll()
                     .requestMatchers("/api/auth/login").permitAll()
                     .requestMatchers("/api/auth/register").permitAll()
                     .requestMatchers("/api/**").authenticated()
+                    .anyRequest().authenticated()
             }
 
         return http.build()

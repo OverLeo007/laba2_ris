@@ -11,19 +11,19 @@ import java.time.temporal.ChronoUnit
 import kotlin.jvm.Throws
 
 @Component
-class JwtIssuer {
-    private val properties: JwtProperties? = null
-
+class JwtIssuer(
+    private val properties: JwtProperties
+) {
     @Throws(IllegalStateException::class)
     fun issue(principal: UserPrincipal): String {
         return JWT.create()
-            .withSubject(java.lang.String.valueOf(principal.id))
+            .withSubject(principal.id.toString())
             .withExpiresAt(Instant.now().plus(Duration.of(1, ChronoUnit.DAYS)))
-            .withClaim("username", principal.getUsername())
+            .withClaim("username", principal.username)
             .withClaim(
-                "auth", principal.getAuthorities()
+                "auth", principal.authorities
                     .stream().map { obj: GrantedAuthority -> obj.authority }.toList()
             )
-            .sign(Algorithm.HMAC256(properties?.secretKey ?: throw IllegalStateException("Secret key is not set")))
+            .sign(Algorithm.HMAC256(properties.secretKey))
     }
 }

@@ -1,10 +1,13 @@
-package ru.paskal.laba2.security.user;
+package ru.paskal.laba2.security.user
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.paskal.laba2.exceptions.UserEntityNotCreatedException
 import ru.paskal.laba2.exceptions.UserEntityNotFoundException
+
+private val log = KotlinLogging.logger {}
 
 @Service
 @Transactional(readOnly = true)

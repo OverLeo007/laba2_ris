@@ -22,7 +22,6 @@ class Prize : BaseEntity() {
     @Column(name = "motivation", length = Integer.MAX_VALUE)
     var motivation: String? = null
 
-
     @OneToMany(mappedBy = "prize", cascade = [CascadeType.ALL], orphanRemoval = true)
     var affiliations: MutableList<Affiliation> = mutableListOf()
 }

@@ -2,6 +2,7 @@ package ru.paskal.laba2.entities
 
 import jakarta.persistence.*
 import ru.paskal.laba2.dtos.LaureatesMetadataDto
+import ru.paskal.laba2.utils.toFormattedString
 import java.time.Instant
 
 @Entity
@@ -17,4 +18,4 @@ class LaureatesMetadata : BaseEntity() {
     var laureatesCount: Int? = null
 }
 
-fun LaureatesMetadata.toDto() = LaureatesMetadataDto(lastUpdated, laureatesCount)
+fun LaureatesMetadata.toDto() = LaureatesMetadataDto(lastUpdated?.toFormattedString(), laureatesCount)

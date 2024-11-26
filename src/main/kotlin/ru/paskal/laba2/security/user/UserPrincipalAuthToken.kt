@@ -2,12 +2,16 @@ package ru.paskal.laba2.security.user
 
 import org.springframework.security.authentication.AbstractAuthenticationToken
 
-class UserPrincipalAuthToken( private var principal: UserPrincipal) : AbstractAuthenticationToken(principal.authorities)  {
-    override fun getCredentials(): Any? {
-        return null
+
+class UserPrincipalAuthToken(
+    private val principal: UserPrincipal
+) : AbstractAuthenticationToken(principal.authorities) {
+
+    init {
+        isAuthenticated = true
     }
 
-    override fun getPrincipal(): Any {
-        return principal
-    }
+    override fun getCredentials(): Any? = null
+
+    override fun getPrincipal(): UserPrincipal = principal
 }

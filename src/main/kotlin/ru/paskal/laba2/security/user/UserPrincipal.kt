@@ -5,9 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails
 
 class UserPrincipal(
     val id: Int,
-    val username: String,
-    val password: String,
-    val authorities: MutableCollection<out GrantedAuthority>
+    private val username: String,
+    private val password: String? = null,
+    private val authorities: MutableCollection<out GrantedAuthority>
 ) : UserDetails {
 
 
@@ -16,7 +16,7 @@ class UserPrincipal(
     }
 
     override fun getPassword(): String {
-        return password
+        return password.orEmpty()
     }
 
     override fun getUsername(): String {
