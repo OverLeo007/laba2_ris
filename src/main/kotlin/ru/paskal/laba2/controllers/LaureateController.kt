@@ -42,6 +42,7 @@ class LaureateController(
         value = [
             ApiResponse(responseCode = "200", description = "Успешное получение списка лауреатов"),
             ApiResponse(responseCode = "400", description = "Неверный запрос"),
+            ApiResponse(responseCode = "401", description = "Авторизация не пройдена"),
             ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             ApiResponse(responseCode = "404", description = "Ресурс не найден"),
             ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
@@ -78,11 +79,12 @@ class LaureateController(
 
     @PostMapping
     @Secured("ROLE_USER")
-    @Operation(summary = "Обовить базу данных", description = "Обновляет базу данных с внешенго API, добавляя отсутствующие строки")
+    @Operation(summary = "Добавить лауреата", description = "Добавляет нового лауреата")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "Таблица успешно обновлена"),
             ApiResponse(responseCode = "400", description = "Неверный запрос"),
+            ApiResponse(responseCode = "401", description = "Авторизация не пройдена"),
             ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
         ]
@@ -103,11 +105,12 @@ class LaureateController(
 
     @PostMapping("/update")
     @Secured("ROLE_USER")
-    @Operation(summary = "Добавить лауреата", description = "Добавляет нового лауреата")
+    @Operation(summary = "Обовить базу данных", description = "Обновляет базу данных с внешенго API, добавляя отсутствующие строки")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Таблица успешно обновлена"),
             ApiResponse(responseCode = "400", description = "Неверный запрос"),
+            ApiResponse(responseCode = "401", description = "Авторизация не пройдена"),
             ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
         ]
